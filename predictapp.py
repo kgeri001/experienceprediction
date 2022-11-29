@@ -1,6 +1,7 @@
 import streamlit as st
 import pickle
 import numpy as np
+import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
 model = pickle.load(open('model.pkl','rb'))
@@ -11,10 +12,16 @@ le_company_size = pickle.load(open('le_company_size.pkl','rb'))
 le_remote_ratio = pickle.load(open('le_remote_ratio.pkl','rb'))
 
 def predict_experience_level(work_year,job_title,employment_type,salary_in_usd,company_location, employee_residence	,company_size, remote_ratio):
-    #input=np.array([work_year,job_title,employment_type,salary_in_usd,company_location,employee_residence,company_size,remote_ratio])
-    #prediction = model.predict(input)
-    prediction = 3
-    return int(prediction)
+    job_title_input = le_job_title.transform(np.array([job_title]))
+    employment_type_input = le_employment_type.transform(np.array([employment_type]))
+    company_size_input = le_company_size.transform(np.array([company_size]))
+    remote_ratio_input = le_remote_ratio.transform(np.array([int(remote_ratio)]))
+    employee_residence_input = le_country_code.transform(np.array([employee_residence]))
+    company_location_input = le_country_code.transform(np.array([company_location]))
+
+    input = np.array([[work_year,job_title_input,employment_type_input,salary_in_usd,company_location_input,employee_residence_input,company_size_input,remote_ratio_input]])
+    prediction = model.predict(input)
+    return prediction
 
 
 def main():
@@ -63,9 +70,9 @@ def main():
         </div>
     """
 
-    if st.button("Predict the age"):
+    if st.button("Predict experience"):
         output = predict_experience_level(Work_year,Job_title,Employment_type_input,Salary_in_usd,Company_location,Employee_residence,Company_size,Remote_ratio)
-        st.success('The age is {}'.format(output))
+        st.success('The experience level is {}'.format(output))
 
         if output == 1:
             st.markdown(safe_html,unsafe_allow_html=True)

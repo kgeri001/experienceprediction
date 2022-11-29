@@ -1,8 +1,6 @@
 import streamlit as st
 import pickle
 import numpy as np
-import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
 
 model = pickle.load(open('model.pkl','rb'))
 le_country_code = pickle.load(open('le_country_code.pkl','rb'))
@@ -53,33 +51,9 @@ def main():
             else:
                 Employment_type_input = 'PT'
 
-    safe_html ="""  
-    <div style="background-color:#80ff80; padding:10px >
-    <h2 style="color:white;text-align:center;"> The Abalone is young</h2>
-    </div>
-    """
-
-    warn_html ="""  
-    <div style="background-color:#F4D03F; padding:10px >
-    <h2 style="color:white;text-align:center;"> The Abalone is middle aged</h2>
-    </div>
-    """
-    danger_html="""  
-        <div style="background-color:#F08080; padding:10px >
-        <h2 style="color:black ;text-align:center;"> The Abalone is old</h2>
-        </div>
-    """
-
     if st.button("Predict experience"):
         output = predict_experience_level(Work_year,Job_title,Employment_type_input,Salary_in_usd,Company_location,Employee_residence,Company_size,Remote_ratio)
         st.success('The experience level is {}'.format(output))
-
-        if output == 1:
-            st.markdown(safe_html,unsafe_allow_html=True)
-        elif output == 2:
-            st.markdown(warn_html,unsafe_allow_html=True)
-        elif output == 3:
-            st.markdown(danger_html,unsafe_allow_html=True)
 
 if __name__=='__main__':
     main()

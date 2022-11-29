@@ -26,8 +26,8 @@ def predict_experience_level(work_year,job_title,employment_type,salary_in_usd,c
 def main():
     st.title("Experience Prediction")
     html_temp = """
-    <div style="background:#025246 ;padding:10px">
-    <h2 style="color:white;text-align:center;"> Experience Prediction ML App </h2>
+    <div style="background:#808080 ;padding:10px">
+    <h2 style="background:#B22222 ;color:Bra;text-align:center;padding:50px">Data Science Job Experience Prediction</h2>
     </div>
     """
     st.markdown(html_temp, unsafe_allow_html = True)
@@ -52,9 +52,45 @@ def main():
             else:
                 Employment_type_input = 'PT'
 
+    en_html ="""  
+      <div style="background-color:#FF69B4; padding:10px >
+      <h2 style="color:White;text-align:center;"> The employee is on Entry-level/Junior</h2>
+      </div>
+    """
+    mi_html ="""  
+      <div style="background-color:#FF69B4; padding:10 >
+      <h2 style="color:White;font-size: 20px;text-align:center;"> The employee is on Mid-level/Intermediate</h2>
+      </div>
+    """
+    se_html="""  
+      <div style="background-color:#FF7F50; padding:10px >
+       <h2 style="color:Black ;text-align:center;font-size: 20px; padding:10px> The employee is on Senior-level/Expert</h2>
+       </div>
+    """
+    ex_html="""  
+      <div style="background-color:#FF69B4; padding:10px >
+       <h2 style="color:Black ;text-align:center;"> The employee is on Executive-level/Director</h2>
+       </div>
+    """
+
     if st.button("Predict experience"):
         output = predict_experience_level(Work_year,Job_title,Employment_type_input,Salary_in_usd,Company_location,Employee_residence,Company_size,Remote_ratio)
+        output = output[0].strip("[]'")
+        
         st.success('The experience level is {}'.format(output))
+        
+        if output == 'EN':
+            st.markdown(en_html,unsafe_allow_html=True)
+        if output == 'MI':
+            st.markdown(mi_html,unsafe_allow_html=True)
+        if output == 'SE':
+            st.markdown(se_html,unsafe_allow_html=True)
+        if output == 'EX':
+            st.markdown(ex_html,unsafe_allow_html=True)
+
+
+
+        
 
 if __name__=='__main__':
     main()

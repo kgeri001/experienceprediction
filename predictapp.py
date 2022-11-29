@@ -1,6 +1,7 @@
 import streamlit as st
 import pickle
 import numpy as np
+from sklearn.ensemble import RandomForestClassifier
 
 model = pickle.load(open('model.pkl','rb'))
 le_country_code = pickle.load(open('le_country_code.pkl','rb'))
